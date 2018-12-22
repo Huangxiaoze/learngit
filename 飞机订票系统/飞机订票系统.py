@@ -38,30 +38,23 @@ class MyWindow(QWidget):
         self.CheckAirplane()
         self.showResult()
     def Booking(self,i):
-        print(i)
         s = self.result[i][1].text()
         s1=self.result[i][3].text()
         takeofftime=s[:10]+"/"+s[13:18]
         arrivetime = s1[:10]+"/"+s[13:18]
-        print(takeofftime,arrivetime,"book")
         tag = self.DataBase.booking(int(self.usertel),int(self.result[i][0].text()),takeofftime,arrivetime)
-        print("yes")
         if tag:
             self.result[i][5].setText(str(int(self.result[i][5].text())-1))
             if self.result[i][5].text()=="0":
                 self.result[i][-1].setEnabled(False)
-            print(self.DataBase.getpassengerticket(self.usertel))
             QMessageBox.information(self, "提示", str(i) + "成功订票")
-
     def Research(self):
-        print("hahahaha")
         airplane1 = self.DataBase.findairplane(offcity=self.lineedits[0].text(),arrivecity=self.lineedits[1].text())
         airplane2 = self.DataBase.findairplane(takeofftime=self.lineedits[2].text(),arrivetime=self.lineedits[3].text())
         correspond = []
         for airplane in airplane1:
             if airplane in airplane2:
                 correspond.append(airplane)
-        print(correspond)
         if correspond!=[]:
             self.showairplane(correspond)
             QMessageBox.information(self,"提示","重新搜索成功")
@@ -156,7 +149,6 @@ class MyWindow(QWidget):
         if self.returntime.text()!="":
             airplane3 = self.DataBase.findairplane(returntime = self.returntime.text())#返回时间
         airplane4 = self.DataBase.findairplane(takeofftime=self.setouttime.text(),arrivetime="all")#起飞时间
-        print(airplane4)
         correspond =[]
         correspond3 = []
         for airplane in airplane2:
@@ -215,7 +207,6 @@ class MyWindow(QWidget):
         else :
             for i in range(4):
                 self.customerinfor[i].setText(str(message[i+1]))
-        print(message)
 
     def addFlight(self):
         self.administrator = QTabWidget(self)
@@ -370,11 +361,8 @@ class MyWindow(QWidget):
         self.checkticket.clicked.connect(self.ReturnTicket)
         self.quit.clicked.connect(self.ChangeRS)
     def ReturnTicket(self):
-        print("hahah")
         a = CheckTicket.Checkticket(self.usertel,self.DataBase,self.result)
-        print("-"*100)
         a.exec_()
-        print("hahahh")
     def ChangeRS(self):
         self.searchframe.setVisible(False)
         self.administrator.setVisible(False)
@@ -414,13 +402,11 @@ class MyWindow(QWidget):
         else:
 
             self.usertype = "管理员"
-            print(administratorstel)
             if int(self.tel.text()) not in administratorstel:
                 QMessageBox.warning(self,"错误","该管理员不存在")
                 return
             else:
                 message = self.DataBase.getadministratorpassword(int(self.tel.text()))
-                print("出错啦")
                 if message[0] != int(self.password.text()):
                     QMessageBox.information(self, "登录失败", "账号或密码输入错误")
                 else:
@@ -432,17 +418,15 @@ class MyWindow(QWidget):
                     self.password.setText("")
                     message1 = self.DataBase.getusermessage(self.usertel, self.usertype)
                     self.checkticket.setVisible(False)
-                    print(message1)
-                    print("ahahahahaha")
                     self.avatorlabel.setPixmap(QPixmap(message1[-1]))
                     for i in range(4):
                         self.customerinfor[i].setText("* * * *")
                     self.checkcustomer.setText("")
-
+                    for i in range(10):
+                        for j in range(10):
+                            self.inputs[i][j].setText("")
                     self.Show()
             message1 = self.DataBase.getusermessage(self.usertel,self.usertype)
-            print(message1)
-            print("ahahahahaha")
             self.avatorlabel.setPixmap(QPixmap(message1[-1]))
     def CheckPassWord(self):
         if len(self.tel.text())<11:
@@ -451,11 +435,8 @@ class MyWindow(QWidget):
         #检查用户是否已经注册
         tels = self.DataBase.getallpassengertel()
         tel2 = self.DataBase.getalladministratortel()
-        print(tels)
-        print(tel2)
         if int(self.tel.text()) not in tels and int(self.tel.text()) not in tel2:
             result=QMessageBox.question(self,"提示","该账号还没有注册，立即注册？")
-            print(result)
             if result == QMessageBox.Yes:
                 self.Register()
     def CheckRegister(self):
@@ -469,7 +450,6 @@ class MyWindow(QWidget):
         message = []
         a = register.Register(message)
         a.exec_()
-        print(message)
         if message==[]:
             return
         if message[-1]=="用户":
@@ -483,7 +463,6 @@ class MyWindow(QWidget):
         message.append(self.userpassword)
         a = revise.Revise(message)
         a.exec_()
-        print(message)
         if message[-1]==True:
             if self.usertype =="用户":
                 self.DataBase.revisepassengermessage(message[3],message[-3],message[0],message[1],message[2],message[-2],message[3],message[4])

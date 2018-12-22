@@ -58,7 +58,6 @@ class AirlineCompany:
         self.passengers = None
 
     def getpassengerticket(self,tel):
-        print("getpassengerticket")
         p = self.passengers
         while p.message.tel!=tel:
             p = p.nextpassenger
@@ -67,15 +66,12 @@ class AirlineCompany:
         i = 0
         while ticket!=None:
             i+=1
-            print(i)
             tickets.append(ticket.getticketmessage())
             ticket = ticket.nextticket
-        print("over")
         return tickets
 
     def addairplane(self,*airplanemessage):
         #增加航班
-        print(airplanemessage)
         airplane = Airplane()
         airplane.setariplane(airplanemessage[0],airplanemessage[1],airplanemessage[2],airplanemessage[3],
                              airplanemessage[4],airplanemessage[5],airplanemessage[6],airplanemessage[7],airplanemessage[8],airplanemessage[9])
@@ -87,7 +83,6 @@ class AirlineCompany:
                 a = a.nextairplane
             a.nextairplane = airplane
     def findairplane(self,**targetobject):
-        print(targetobject)
         #获取符合条件的所有飞机 price= or airplanenumber= or offcity = and arrivecity or takeofftime= and arrivetime or returntime
         correspond = []
         a = self.airplanes
@@ -104,9 +99,8 @@ class AirlineCompany:
                         correspond.append(a)
                     a = a.nextairplane
             elif key =="returntime":
-                print(key,value)
                 while a!=None:
-                    if a.returntime == value:
+                    if  value in a.returntime:
                         correspond.append(a)
                     a = a.nextairplane
         else:
@@ -149,8 +143,6 @@ class AirlineCompany:
                 p = p.nextpassenger
             p.nextpassenger = passenger
     def revisepassengermessage(self,identify,*message):
-        print(message)
-        print("hahahah")
         #用户修改资料时调用
         p = self.passengers
         while p.message.identify != identify:
@@ -164,7 +156,6 @@ class AirlineCompany:
         p.message.setmessage(message[0], message[1], message[2], message[3], message[4], message[5], message[6])
     def getusermessage(self,tel,type):
         #查找用户信息时调用
-        print("getusermessage")
         if type == "用户":
             p = self.passengers
             tag = False
@@ -201,7 +192,6 @@ class AirlineCompany:
         return tels
     def getalladministratortel(self):
         #获得所有管理员的电话
-        print("hello")
         tels =[]
         a = self.administrators
         while a!=None:
@@ -211,8 +201,6 @@ class AirlineCompany:
 
     def booking(self,tel,airplanenumber,takeofftime,arrivetime):
         #订票
-        print("booking..........")
-        print(tel,airplanenumber,takeofftime,arrivetime)
         a = self.airplanes
         while a!=None:
             if a.airplanenumber == airplanenumber and a.takeofftime==takeofftime and a.arrivetime==arrivetime:
@@ -231,10 +219,7 @@ class AirlineCompany:
                     while t.nextticket!=None:
                         t = t.nextticket
                     t.nextticket = ticket
-                b = a
                 a.amount-=1
-                self.printallairplaneticket()
-                print(a.amount,b.amount)
                 return True
             p = p.nextpassenger
     def printallairplaneticket(self):
@@ -242,6 +227,11 @@ class AirlineCompany:
         while a.nextairplane!=None:
             print(a.airplanenumber,a.amount)
             a = a.nextairplane
+    def printallticket(self,tickets):
+        ticket = tickets
+        while ticket != None:
+            print(ticket.getticketmessage())
+            ticket = ticket.nextticket
     def return_a_ticket(self,identify,No,airplanenumber):
         #退票
         a = self.airplanes
@@ -251,7 +241,7 @@ class AirlineCompany:
         formerticket = p.tickets
         latterticket = p.tickets
         if No ==0:
-            p.tickets = None
+            p.tickets = p.tickets.nextticket
         else:
             for i in range(No-1):
                 formerticket = formerticket.nextticket
@@ -261,22 +251,17 @@ class AirlineCompany:
         while a.airplanenumber!=airplanenumber:
             a = a.nextairplane
         a.amount+=1
-        self.printallairplaneticket()
-        print(a.amount,airplanenumber)
     def getadministratorpassword(self,tel):
         #获得管理员登录密码
-        print("getadministratorpassword")
         p = self.administrators
         while p.message.tel != tel:
             p = p.nextadministrator
-        print("getpassengerword")
         return p.message.password, p.message.name
     def getpassengerpassword(self,tel):
         #获得用户登录密码
         p = self.passengers
         while p.message.tel!= tel:
             p = p.nextpassenger
-        print("getpassengerword")
         return p.message.password,p.message.name
 
 

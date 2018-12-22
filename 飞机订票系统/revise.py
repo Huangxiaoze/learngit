@@ -71,8 +71,6 @@ class Revise(QDialog):
         self.showpasswordframe.clicked.connect(self.showpassword)
         self.changeavator.clicked.connect(self.changeavatorfunc)
     def changemessage(self):
-        print(self.lineedits[3].text())
-
         if self.lineedits[3].text()!="" and self.lineedits[3].text()!=str(self.message[-1]):
             QMessageBox.warning(self,"error","旧密码错误")
             return
@@ -84,11 +82,9 @@ class Revise(QDialog):
         self.message[4] = self.lineedits[-2].text()
         if self.lineedits[-1].text()!="":
             self.message[-1] = int(self.lineedits[-1].text())
-        print(self.message)
         self.message.append(True)
         self.close()
     def check(self):
-        print("hahha")
         if self.lineedits[4].text()!="" and len(self.lineedits[4].text()) == len(self.lineedits[-1].text()):
             if self.lineedits[-1].text()!= self.lineedits[4].text():
                 QMessageBox.warning(self,"Warning","新密码不一致")

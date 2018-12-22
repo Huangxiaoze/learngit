@@ -3,7 +3,6 @@ from PyQt5.QtGui import QPainter, QPixmap, QFont, QIcon
 from PyQt5.QtWidgets import QDialog, QLabel,  QFrame,  QPushButton, QApplication
 class Checkticket(QDialog):
     def __init__(self,usertel,Database,result):
-        print("Checking")
         super().__init__()
         self.result = result
         self.Database = Database
@@ -12,9 +11,7 @@ class Checkticket(QDialog):
         self.name = message[1]
         self.id = message[-3]
         self.data = self.Database.getpassengerticket(self.tel)
-        print(self.data)
         self.initUI()
-        print("checking")
         self.show()
     def ReturnTicket(self,i,j):
         self.Database.return_a_ticket(self.id,i*4+j,self.data[i*4+j][0])
@@ -26,8 +23,6 @@ class Checkticket(QDialog):
                 break
         del self.data[i*4+j]
         self.ShowTicket()
-    def closeEvent(self, QCloseEvent):
-        print("Close")
     def ShowTicket(self):
         for i in range(2):
             for j in range(4):
