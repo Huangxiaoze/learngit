@@ -12,7 +12,9 @@ class MyWindow(QWidget):
         super().__init__()
         self.DataBase = airplaneclass.AirlineCompany()
         #测试数据
-        self.DataBase.addpassenger("C:/Users/Hasee/PycharmProjects/image/8.jpg","黄小泽", "黄泽文", 15768497440, 1228, 44098, "1317670668@qq.com")
+        self.DataBase.addpassenger("C:/Users/Hasee/PycharmProjects/image/8.jpg","黄小泽", "黄泽文", 15768497440, 1228, 440982199801283455, "1317670668@qq.com")
+        self.DataBase.addpassenger("C:/Users/Hasee/PycharmProjects/image/8.jpg", "黄小斌", "黄泽斌", 15768497448, 1228,
+                                   440982199801283455, "1317670668@qq.com")
         self.DataBase.addadministrator("C:/Users/Hasee/PycharmProjects/image/7.jpg","黄小红", "黄小红", 15363159240, 1228, 12, 12)
         self.DataBase.addairplane(101, 100, 11, "深圳", "上海", "机场1", "机场2", "2018/12/20/18:00", "2018/12/22/18:00","2018/12/25/18:00")
         self.DataBase.addairplane(102, 110, 11, "广州", "上海", "机场1", "机场2", "2018/12/20/19:00", "2018/12/22/19:00","2018/12/24/19:00")
@@ -32,6 +34,13 @@ class MyWindow(QWidget):
                                   "2018/12/25/18:00")
         self.DataBase.addairplane(108, 110, 11, "广州", "上海", "机场1", "机场2", "2018/12/23/19:00", "2018/12/25/19:00",
                                   "2018/12/24/19:00")
+        self.DataBase.addairplane(107, 100, 11, "深圳", "北京", "机场1", "机场2", "2018/12/23/18:00", "2018/12/25/18:00",
+                                  "2018/12/25/18:00")
+        self.DataBase.addairplane(108, 110, 11, "广州", "北京", "机场1", "机场2", "2018/12/23/19:00", "2018/12/25/19:00",
+                                  "2018/12/24/19:00")
+
+
+
         self.initUI()
         self.Lognin()
         self.addFlight()
@@ -187,6 +196,8 @@ class MyWindow(QWidget):
     def SaveFlight(self):
         #self.input    number,price,amount,offcity,arrivecity,off,destination,time1,time2
         for i in range(10):
+            if self.inputs[0][0].text()=="":
+                return
             if self.inputs[i][0].text()!="":
                 self.DataBase.addairplane(self.inputs[i][0].text(),
                                           self.inputs[i][1].text(),
@@ -211,11 +222,11 @@ class MyWindow(QWidget):
     def addFlight(self):
         self.administrator = QTabWidget(self)
         self.administrator.setVisible(False)
-        self.administrator.setGeometry(50,100,1220,450)
+        self.administrator.setGeometry(10,130,1390,450)
         qwidget1 = QWidget()#航班信息录入
         qwidget2 = QWidget()#客户资料查询
         self.addFlightframe = QFrame(qwidget1)
-        self.addFlightframe.setGeometry(10,10,1200,400)
+        self.addFlightframe.setGeometry(10,10,1380,400)
         title = "航班号，票价，可售票数，起飞城市，抵达城市，起飞机场，抵达机场，起飞时间，抵达时间，返回时间".split("，")
         labels = [QLabel(title[i],self.addFlightframe) for i in range(len(title))]
         self.inputs = [[QLineEdit(self.addFlightframe) for i in range(len(title))] for j in range(10)]
@@ -228,12 +239,14 @@ class MyWindow(QWidget):
             label.setAlignment(Qt.AlignCenter)
             label.setStyleSheet("background-color:rgb(0,255,255,60)")
         for i in range(len(title)):
-            labels[i].setGeometry(120*i,0,120,25)
+            labels[i].setGeometry(135*i,0,135,25)
         for i in range(10):
             for j in range(len(title)):
-                self.inputs[i][j].setGeometry(120*j,25*(i+1),120,25)
+                self.inputs[i][j].setGeometry(135*j,25*(i+1),135,25)
                 self.inputs[i][j].setAlignment(Qt.AlignCenter)
                 self.inputs[i][j].setStyleSheet("background-color:rgb(211,211,211,)")
+
+
         self.administrator.addTab(qwidget2,"客户资料查询")
         self.administrator.addTab(qwidget1,"航班信息录入")
         frame = QFrame(qwidget2)
@@ -253,7 +266,7 @@ class MyWindow(QWidget):
         for i in range(4):
             showmessage[i].setFont(QFont("微软雅黑",10,QFont.Bold))
             showmessage[i].setGeometry(20,100+40*i,80,45)
-            self.customerinfor[i].setGeometry(120,100+40*i,80,45)
+            self.customerinfor[i].setGeometry(120,100+40*i,200,45)
     def initUI(self):
         self.resize(1500, 900)
         self.setWindowTitle("飞机订票")

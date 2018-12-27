@@ -73,7 +73,7 @@ class AirlineCompany:
     def addairplane(self,*airplanemessage):
         #增加航班
         airplane = Airplane()
-        airplane.setariplane(airplanemessage[0],airplanemessage[1],airplanemessage[2],airplanemessage[3],
+        airplane.setariplane(int(airplanemessage[0]),int(airplanemessage[1]),int(airplanemessage[2]),airplanemessage[3],
                              airplanemessage[4],airplanemessage[5],airplanemessage[6],airplanemessage[7],airplanemessage[8],airplanemessage[9])
         a = self.airplanes
         if a == None:
@@ -82,6 +82,9 @@ class AirlineCompany:
             while a.nextairplane!=None:
                 a = a.nextairplane
             a.nextairplane = airplane
+        a = self.airplanes
+        while a!=None:
+            a = a.nextairplane
     def findairplane(self,**targetobject):
         #获取符合条件的所有飞机 price= or airplanenumber= or offcity = and arrivecity or takeofftime= and arrivetime or returntime
         correspond = []
